@@ -21,6 +21,14 @@
             margin: 0;
         }
 
+        #idStudent{
+            border: none;
+        }
+
+        #idStudent:focus{
+            outline: none;
+        }
+
         /*table, th, td {*/
         /*    border: 1px solid black;*/
         /*}*/
@@ -39,7 +47,7 @@
             <form:form id="form" action="/editStudent/${student.getId()}" method="POST" modelAttribute="newStudent">
                 <tr>
                     <td style="font-weight: bold">*StudentID:</td>
-                    <td><form:input path="id" value="${student.getId()}" required="true"/></td>
+                    <td><form:input id="idStudent" path="id" value="${student.getId()}" readonly="true"/></td>
                 </tr>
                 <tr>
                     <td style="font-weight: bold">*Name:</td>

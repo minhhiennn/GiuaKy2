@@ -1,11 +1,15 @@
-package com.example.cdwgiuaky2.bean;
+package com.example.cdwgiuaky2.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+@Entity
 public class Student {
+    @Id
     private String id;
     private String name;
     private boolean male;

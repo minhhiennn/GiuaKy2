@@ -29,6 +29,7 @@
         /*    background-color: aqua;*/
         /*}*/
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -39,7 +40,8 @@
             <form:form id="form" action="newStudentSubmit" method="POST" modelAttribute="student">
                 <tr>
                     <td style="font-weight: bold">*StudentID:</td>
-                    <td><form:input path="id" required='true'/></td>
+                    <td><form:input path="id" required='true' onblur="checkIdStudent(this)"/></td>
+                    <td class="errorIdStudent" style="display: none;color: red">Id bị trùng</td>
                 </tr>
                 <tr>
                     <td style="font-weight: bold">*Name:</td>
@@ -88,6 +90,9 @@
         </c:if>
     </div>
     <script>
+
+        let checkId = true;
+
         function submit() {
             let form = document.getElementById('form');
             //reset all elements
@@ -105,13 +110,42 @@
 
             //check birthday format
             let birthday = document.getElementById("birthday")
-            let reg = /(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d/;
-            if (!birthday.value.match(reg)) {
+            let regBirthday = /(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d/;
+            if (!birthday.value.match(regBirthday)) {
                 birthday.style.border = "1px solid red";
                 return false;
             }
 
+            //check id
+            if(checkId == true){
+                return false;
+            }
+
+
             form.submit();
+        }
+
+        function checkIdStudent(idStudentField) {
+            let id = idStudentField.value;
+            $.ajax({
+                type: "POST",
+                url: "/ajax/newStudent",
+                data: {idStudent: id},
+                dataType: "text",
+                success: function (data) {
+                    let isExist = data;
+                    if (isExist == "true") {
+                        let errorIdStudent = document.getElementsByClassName("errorIdStudent")[0];
+                        errorIdStudent.style.display = "block";
+                        checkId = true;
+                    } else {
+                        let errorIdStudent = document.getElementsByClassName("errorIdStudent")[0];
+                        errorIdStudent.style.display = "none";
+                        checkId = false;
+                    }
+                    console.log(checkId);
+                },
+            });
         }
     </script>
 </div>
